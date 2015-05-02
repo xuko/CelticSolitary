@@ -1,0 +1,480 @@
+swagger: "2.0"
+info:
+  title: TDW User REST API
+  version: 0.0.7
+  description: "**[TDW]** Demo application for managing users and groups.\n"
+  contact:
+    name: TDW - U.P.M
+    url: "http://www.etsisi.upm.es/"
+    email: "tdw@etsisi.upm.es"
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8000"
+basePath: /TDW_UserApi/v1
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+  - text/plain
+  - application/x-www-form-urlencoded
+produces:
+  - application/json
+paths:
+  /user:
+    get:
+      tags:
+        - User
+      summary: Get the user list
+      description: "Gets all the `User` objects.\n"
+      responses:
+        "200":
+          description: "`Ok` Successful response\n"
+          schema:
+            title: ArrayOfUsers
+            type: array
+            items:
+              $ref: "#/definitions/User"
+          examples:
+            application/json: "[\n  {\n    \"id\": 100,\n    \"username\": \"tdw_upm\",\n    \"email\":\"tdw_upm@example.com\",\n    \"createTime\": {\n      \"date\": \"2015-04-23 11:31:32.000000\",\n      \"timezone_type\": 3,\n      \"timezone\": \"Europe\\/Madrid\"\n    },\n    \"isActive\": true,\n    \"isAdmin\": true,\n    \"group_id\": {\n      \"id\": 3,\n      \"groupname\": \"Admin\",\n      \"description\": \"Admin group\"\n    },\n    \"note\": \"Admin user TDW UPM\"\n  }\n]\n"
+        "204":
+          description: "`No Content`\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_get_users
+      security:
+        - TDW_UserApi_auth: []
+    post:
+      tags:
+        - User
+      summary: Creates a new user
+      description: "Creates a new user\n"
+      parameters:
+        - name: user
+          in: body
+          description: User to add to the system
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "201":
+          description: "`Created`\n"
+          schema:
+            $ref: "#/definitions/User"
+          examples:
+            application/json: "{\n    \"id\": 101,\n    \"username\": \"new_user\",\n    \"email\":\"new_user@example.com\",\n    \"createTime\": {\n      \"date\": \"2015-04-23 11:31:32.000000\",\n      \"timezone_type\": 3,\n      \"timezone\": \"Europe\\/Madrid\"\n    },\n    \"isActive\": true,\n    \"isAdmin\": false,\n    \"group_id\": 0\n  }\n"
+        "400":
+          description: "`Bad Request` Username, password or email is left out\nor user or email already exists.\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "403":
+          description: "`Forbidden` Application is not allowed to create a new user\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_post_user
+  "/user/{userId}":
+    get:
+      tags:
+        - User
+      summary: Gets the user identified by ID
+      description: "Retrieves a `User` object identified by `userId`.\n"
+      parameters:
+        - $ref: "#/parameters/userId"
+      responses:
+        "200":
+          description: "`Ok` The user exists\n"
+          schema:
+            title: User
+            type: object
+            $ref: "#/definitions/User"
+          examples:
+            application/json: "{\n    \"id\": 2015,\n    \"username\": \"tdw_user\",\n    \"email\":\"tdw_user@example.com\",\n    \"createTime\": {\n      \"date\": \"2013-03-23 15:28:32.000000\",\n      \"timezone_type\": 3,\n      \"timezone\": \"Europe\\/Madrid\"\n    },\n    \"isActive\": false,\n    \"isAdmin\": false,\n    \"group_id\": 0\n  }\n"
+        "404":
+          description: "`Not Found` The user could not be found\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_get_user_by_id
+    delete:
+      tags:
+        - User
+      summary: Deletes a user
+      description: "Deletes the `User` identified by `userId`.\n"
+      parameters:
+        - $ref: "#/parameters/userId"
+      responses:
+        "204":
+          description: "`No Content` User is found and deleted\n"
+        "403":
+          description: "`Forbidden` Application is not allowed to delete the user\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "404":
+          description: "`Not Found` The user could not be found\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_delete_user
+    put:
+      tags:
+        - User
+      summary: Updates a user
+      description: "Updates a property of the user identified by `userId`.\n"
+      parameters:
+        - $ref: "#/parameters/userId"
+        - name: username
+          in: formData
+          description: Username
+          required: false
+          type: string
+        - name: email
+          in: formData
+          description: User email
+          required: false
+          type: string
+        - name: password
+          in: formData
+          description: User password
+          required: false
+          type: string
+        - name: createTime
+          in: formData
+          description: User create time
+          required: false
+          type: string
+          format: date-time
+        - name: isActive
+          in: formData
+          description: User is active
+          required: false
+          type: boolean
+        - name: isAdmin
+          in: formData
+          description: User is admin
+          required: false
+          type: boolean
+      responses:
+        "204":
+          description: "`No Content` User previously existed and is now updated\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "400":
+          description: "`Bad Request` Missing data or username or email already exists\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "403":
+          description: "`Forbidden` Application is not allowed to update a user\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "404":
+          description: "`Not Found` The user could not be found\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_put_user
+  "/user/username/{username}":
+    get:
+      tags:
+        - User
+      summary: Gets the user identified by username
+      description: "Retrieves a `User` object identified by `username`.\n"
+      parameters:
+        - $ref: "#/parameters/username"
+      responses:
+        "200":
+          description: "`Ok` The user identified by *username* exists\n"
+          schema:
+            title: User
+            $ref: "#/definitions/User"
+          examples:
+            application/json: "{\n    \"id\": 2015,\n    \"username\": \"tdw_user\",\n    \"email\":\"tdw_user@example.com\",\n    \"createTime\": {\n      \"date\": \"2013-03-23 15:28:32.000000\",\n      \"timezone_type\": 3,\n      \"timezone\": \"Europe\\/Madrid\"\n    },\n    \"isActive\": false,\n    \"isAdmin\": false,\n    \"group_id\": 0\n  }\n"
+        "404":
+          description: "`Not Found` The user could not be found\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_get_user_by_username
+  /group:
+    get:
+      tags:
+        - Group
+      summary: Get the group list
+      description: "Gets all the `Group` objects.\n"
+      responses:
+        "200":
+          description: "`Ok` Successful response\n"
+          schema:
+            title: ArrayOfGroups
+            type: array
+            items:
+              $ref: "#/definitions/Group"
+        "204":
+          description: "`No Content`\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_get_groups
+    post:
+      tags:
+        - Group
+      summary: Creates a new group
+      description: "Creates a new group\n"
+      parameters:
+        - name: group
+          in: body
+          description: Group to add to the system
+          required: true
+          schema:
+            $ref: "#/definitions/Group"
+      responses:
+        "201":
+          description: "`Created`\n"
+          schema:
+            $ref: "#/definitions/Group"
+        "400":
+          description: "`Bad Request` Groupname is left out or group already exists.\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "403":
+          description: "`Forbidden` Application is not allowed to create a new group\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_post_group
+  "/group/{groupId}":
+    get:
+      tags:
+        - Group
+      summary: Gets the group identified by ID
+      description: "Retrieves a `Group` object identified by `groupId`.\n"
+      parameters:
+        - $ref: "#/parameters/groupId"
+      responses:
+        "200":
+          description: "`Ok` The group exists\n"
+          schema:
+            title: Group
+            $ref: "#/definitions/Group"
+        "404":
+          description: "`Not Found` The group identified by ***groupId*** could not be found\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_get_group_by_id
+    delete:
+      tags:
+        - Group
+      summary: Deletes a group
+      description: "Deletes the `Group` identified by `groupId`.\n"
+      parameters:
+        - $ref: "#/parameters/groupId"
+      responses:
+        "204":
+          description: "`No Content` Group is found and deleted\n"
+        "403":
+          description: "`Forbidden` Application is not allowed to delete the group\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "404":
+          description: "`Not Found` The group could not be found\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_delete_group
+    put:
+      tags:
+        - Group
+      summary: Updates a group
+      description: "Updates a property of a group identified by `groupId`.\n"
+      parameters:
+        - $ref: "#/parameters/groupId"
+        - name: groupname
+          in: formData
+          description: Groupname
+          required: false
+          type: string
+        - name: description
+          in: formData
+          description: Group description
+          required: false
+          type: string
+      responses:
+        "204":
+          description: "`No Content` Group previously existed and is now updated\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "400":
+          description: "`Bad Request` Missing the name or description of the group or group already exists\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "403":
+          description: "`Forbidden` Application is not allowed to update a group\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "404":
+          description: "`Not Found` The group could not be found\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_put_group
+  "/group/groupname/{groupname}":
+    get:
+      tags:
+        - Group
+      summary: Gets the group identified by groupname
+      description: "Retrieves the `Group` object identified by `groupname`.\n"
+      parameters:
+        - $ref: "#/parameters/groupname"
+      responses:
+        "200":
+          description: "`Ok` The group identified by *groupname* exists\n"
+          schema:
+            title: Group
+            $ref: "#/definitions/Group"
+        "404":
+          description: "`Not Found` The group could not be found\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_get_group_by_groupname
+  /authentication:
+    post:
+      tags:
+        - User
+      summary: Authenticates a user
+      description: "No session is created in user authentication.\nApplication can ask \"is this username/password valid?\"\n"
+      parameters:
+        - name: username
+          in: formData
+          description: username
+          required: true
+          type: string
+        - name: password
+          in: formData
+          description: password
+          required: true
+          type: string
+      responses:
+        "200":
+          description: "`Ok` if successful\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "400":
+          description: "`Bad Request` if unsuccessful\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_authentication
+  "/group/user/{groupId}/{userId}":
+    post:
+      tags:
+        - Group
+        - User
+      summary: Adds user as member of group
+      description: "Adds the user (identified by `userId`) as member of the group\n(identified by `groupId`)\n"
+      parameters:
+        - name: groupId
+          in: path
+          description: Group ID
+          required: true
+          type: integer
+          format: int64
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        "201":
+          description: "`Created` If the user is successfully added as a member of the group\n"
+          schema:
+            title: Group
+            $ref: "#/definitions/Group"
+        "400":
+          description: "`Bad Request` The user identified by **userId** could not be found.\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "403":
+          description: "`Forbidden` Application is not allowed to add a user to the  group.\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "404":
+          description: "`Not Found` The group identified by **groupId** could not be found.\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+        "409":
+          description: "`Conflict` The user is already a member of the group.\n"
+          schema:
+            $ref: "#/responses/HTTP_Status"
+      operationId: tdw_post_group_user
+definitions:
+  User:
+    required:
+      - username
+      - email
+      - password
+    properties:
+      id:
+        type: integer
+        format: int64
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      createTime:
+        type: string
+        format: date-time
+      isActive:
+        type: boolean
+      isAdmin:
+        type: boolean
+      groupId:
+        type: integer
+        format: int64
+  Group:
+    required:
+      - groupname
+    properties:
+      id:
+        type: integer
+        format: int64
+      groupname:
+        type: string
+      description:
+        type: string
+  HTTP_Status:
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+parameters:
+  groupId:
+    name: groupId
+    in: path
+    description: group ID
+    required: true
+    type: integer
+    format: int64
+  userId:
+    name: userId
+    in: path
+    description: user ID
+    required: true
+    type: integer
+    format: int64
+  groupname:
+    name: groupname
+    in: path
+    description: groupname to fetch
+    required: true
+    type: string
+  username:
+    name: username
+    in: path
+    description: username to fetch
+    required: true
+    type: string
+responses:
+  HTTP_Status:
+    description: HTTP status
+    schema:
+      $ref: "#/definitions/HTTP_Status"
+securityDefinitions:
+  TDW_UserApi_auth:
+    type: basic
+    description: "To access this feature you must be authenticated [`/login`](/login)\n"

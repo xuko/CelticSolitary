@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://phpunit.de/manual/4.1/en/appendixes.configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="tests/bootstrap.php"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+>
+
+  <!-- logging>
+    <log type="coverage-clover" target="build/logs/clover.xml"/>
+  </logging -->
+  <testsuites>
+    <testsuite name="TDW UserApi Unit testing">
+      <directory suffix="Test.php">tests</directory>
+    </testsuite>
+  </testsuites>
+
+  <php>
+    <!-- define some constants to use in our test classes -->
+    <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST" value="127.0.0.1"/>
+    <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT" value="4444"/>
+    <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TIMEOUT" value="10000"/>
+    <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BASEURL" value="http://localhost:8000/"/>
+    <const name="PHPUNIT_SELENESE_DIR" value="./tests/Selenium/SeleneseFiles"/>        
+    <const name="PHPUNIT_SELENIUM_SCREENSHOT_DIR" value="./tests/Selenium/ScreenShot/"/>        
+  </php>
+
+  <filter>
+    <whitelist>
+      <directory>./app</directory>
+      <exclude>
+        <directory>./app/resources</directory>
+        <directory>./app/scripts_aux</directory>
+      </exclude>
+    </whitelist>
+  </filter>
+
+</phpunit>

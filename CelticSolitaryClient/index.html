@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+        <meta charset='UTF-8'>
+        <meta name="author" content="Jorge Perez Berrio">
+        <title>Solitario Celta</title>
+        <link rel="icon" href="triskel.gif">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="code.js"></script>
+    </head>
+
+    <body onload="getUser()">
+        <div id="header">
+
+            <div id="title">
+                <img id="logo" src="triskel.gif" alt="triskel">SOLITARIO CELTA</div>
+            <ul id="menu">
+                <li>
+                    <button id="btnPlace" class="blue" type="button" onclick="place()">Situar</button>
+                </li>
+                <li>
+                    <button id="btnPlay" class="green" type="button" onclick="play()">Jugar</button>
+                </li>
+                <li>
+                    <button id="btnSaveGame" type="button" class="cream" onclick="saveGame()">Guardar Partida</button>
+                </li>
+                <li>
+                    <button id="btnLoadGame" type="button" class="cream" onclick="loadGame()">Cargar Partida</button>
+                </li>
+                <li>
+                    <button type="button" class="cream">Registrar Puntuación</button>
+                </li>
+            </ul>
+        </div>
+        <div id="game">
+            <div id="leftSection">
+                <div id="config" class="cream">
+                     <h1>Opciones de juego</h1>
+                    <form id="configF">
+                        <label for="holeC">Hueco central:</label>
+                        <input type="radio" name="holeSelected" id="holeC" value="center" checked>
+                        <br>
+                        <label for="holeR">Hueco aleatorio:</label>
+                        <input type="radio" name="holeSelected" id="holeR" value="random">
+                        <br>
+                        <label for="time">Tiempo:</label>
+                        <input type="number" name="time" id="time" min="1" max="3600" placeholder="Sin tiempo">seg
+                        <br>
+                        <br>
+                        <label for="drag_drop">Arrastrar y soltar para mover</label>
+                        <input type="checkbox" name="drag_drop" id="drag_drop">
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div id="board" class="cream">
+                <div>
+                    <div class="goshtHole"></div>
+                    <div class="goshtHole"></div>
+                    <div class="hole empty" id="hole1"></div>
+                    <div class="hole empty" id="hole2"></div>
+                    <div class="hole empty" id="hole3"></div>
+                </div>
+                <div>
+                    <div class="goshtHole"></div>
+                    <div class="goshtHole"></div>
+                    <div class="hole empty" id="hole4"></div>
+                    <div class="hole empty" id="hole5"></div>
+                    <div class="hole empty" id="hole6"></div>
+                </div>
+                <div>
+                    <div class="hole empty" id="hole7"></div>
+                    <div class="hole empty" id="hole8"></div>
+                    <div class="hole empty" id="hole9"></div>
+                    <div class="hole empty" id="hole10"></div>
+                    <div class="hole empty" id="hole11"></div>
+                    <div class="hole empty" id="hole12"></div>
+                    <div class="hole empty" id="hole13"></div>
+                </div>
+                <div>
+                    <div class="hole empty" id="hole14"></div>
+                    <div class="hole empty" id="hole15"></div>
+                    <div class="hole empty" id="hole16"></div>
+                    <div class="hole empty" id="hole17"></div>
+                    <div class="hole empty" id="hole18"></div>
+                    <div class="hole empty" id="hole19"></div>
+                    <div class="hole empty" id="hole20"></div>
+                </div>
+                <div>
+                    <div class="hole empty" id="hole21"></div>
+                    <div class="hole empty" id="hole22"></div>
+                    <div class="hole empty" id="hole23"></div>
+                    <div class="hole empty" id="hole24"></div>
+                    <div class="hole empty" id="hole25"></div>
+                    <div class="hole empty" id="hole26"></div>
+                    <div class="hole empty" id="hole27"></div>
+                </div>
+                <div>
+                    <div class="goshtHole"></div>
+                    <div class="goshtHole"></div>
+                    <div class="hole empty" id="hole28"></div>
+                    <div class="hole empty" id="hole29"></div>
+                    <div class="hole empty" id="hole30"></div>
+                </div>
+                <div>
+                    <div class="goshtHole"></div>
+                    <div class="goshtHole"></div>
+                    <div class="hole empty" id="hole31"></div>
+                    <div class="hole empty" id="hole32"></div>
+                    <div class="hole empty" id="hole33"></div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>

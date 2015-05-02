@@ -1,0 +1,15 @@
+<VirtualHost *:80>
+    ServerAdmin TDW_UserApi@example.com
+    DocumentRoot "/xampp/htdocs/TDW_PHP/public"
+    ServerName TDW_UserApi.com
+    ServerAlias www.TDW_UserApi.com
+
+    #ErrorLog "logs/TDW_UserApi.com-error.log"
+    #CustomLog "logs/TDW_UserApi.com-access.log" combined
+
+    <Directory "/xampp/htdocs/TDW_PHP/public">
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Directory>
+</VirtualHost>

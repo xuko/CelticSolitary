@@ -1,0 +1,71 @@
+TDW\UserApi\Entity\User:
+    type: entity
+    # repositoryClass: TDW\UserApi\Entity\UserRepository
+    table: user
+    indexes:
+        fk_users_group_idx:
+            columns:
+                - group_id
+    uniqueConstraints:
+        username_UNIQUE:
+            columns:
+                - username
+        email_UNIQUE:
+            columns:
+                - email
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: true
+            comment: 'Resource identifier. This property is read-only.'
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        username:
+            type: string
+            nullable: false
+            length: 16
+            fixed: false
+        email:
+            type: string
+            nullable: false
+            length: 255
+            fixed: false
+        password:
+            type: string
+            nullable: false
+            length: 64
+            fixed: false
+        createTime:
+            type: datetime
+            nullable: true
+            column: create_time
+        isAdmin:
+            type: boolean
+            nullable: true
+            default: false
+            column: isAdmin
+        isActive:
+            type: boolean
+            nullable: true
+            default: true
+            column: isActive
+        note:
+            type: string
+            nullable: true
+            length: 255
+            fixed: false
+            comment: 'Optional note about a user set by the administrator'
+    manyToOne:
+        group:
+            targetEntity: Group
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                group_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

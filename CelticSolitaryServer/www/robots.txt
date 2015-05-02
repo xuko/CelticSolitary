@@ -1,0 +1,3 @@
+# robots.txt for TDW User REST Api
+User-agent: *
+Disallow: /
